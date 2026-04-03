@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IA Study Portal | Official</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0f172a; --card: #1e293b; --accent: #8b5cf6; --success: #10b981; --error: #f43f5e; --text: #f8fafc; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
+        .glass-card { background: var(--card); width: 100%; max-width: 650px; border-radius: 24px; padding: 40px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); }
+        
+        h1 { background: linear-gradient(90deg, #8b5cf6, #d946ef); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; font-size: 2.2rem; text-align: center; }
+        
+        /* Dashboard Styles */
+        .dash-row { display: flex; justify-content: space-between; font-size: 0.8rem; color: #94a3b8; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; margin: 20px 0 30px; border: 1px solid rgba(255,255,255,0.05); }
+        .dash-row b { color: var(--accent); font-size: 0.9rem; }
+
+        select, .btn { width: 100%; padding: 15px; border-radius: 12px; margin-bottom: 15px; font-size: 1rem; cursor: pointer; }
+        select { background: #0f172a; color: white; border: 2px solid #334155; }
+        .btn { background: var(--accent); color: white; border: none; font-weight: 800; transition: 0.3s; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(139, 92, 246, 0.4); }
+        
+        /* PIN Input Style */
+        .pin-box { margin: 20px 0; text-align: center; background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px; border: 1px dashed #334155; }
+        .pin-input { width: 80%; padding: 12px; border-radius: 8px; border: 2px solid #334155; background: #0f172a; color: white; text-align: center; font-size: 1.2rem; letter-spacing: 8px; font-weight: 800; }
+        .pin-input:focus { border-color: var(--accent); outline: none; }
+
+        /* Quiz Stats */
+        .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; text-align: center; }
+        .stat-box { background: rgba(255,255,255,0.05); padding: 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
+        .stat-val { display: block; font-size: 1.2rem; font-weight: 800; }
+        
+        /* Options */
+        .option { background: rgba(255,255,255,0.03); border: 2px solid #334155; padding: 16px; margin-bottom: 12px; border-radius: 12px; cursor: pointer; transition: 0.2s; }
+        .option:hover { border-color: var(--accent); background: rgba(255,255,255,0.06); }
+        .option.correct-choice { border-color: var(--success) !important; background: rgba(16,185,129,0.15) !important; color: #fff; }
+        .option.wrong-choice { border-color: var(--error) !important; background: rgba(244,63,94,0.15) !important; }
+        
+        .feed { padding: 15px; border-radius: 12px; margin-top: 15px; display: none; line-height: 1.5; border-left: 5px solid transparent; background: rgba(255,255,255,0.03); font-size: 0.95rem; }
+    </style>
+</head>
+<body>
+
+<div class="glass-card">
+    <div id="menu-view">
+        <h1>X-A EXAM PORTAL</h1>
+        <div id="stats-dashboard"></div>
+        
+        <label style="font-size:0.7rem; color:#94a3b8; text-transform:uppercase; letter-spacing:1px; margin-left:5px;">Select Assessment</label>
+        <select id="test-sel">
+            <option value="test2">Mock Test 2 (Available)</option>
+            <option value="test1">Mock Test 1 (Empty)</option>
+            <option value="test3">Mock Test 3 (Empty)</option>
+            <option value="test7">Final 100Q Mega Test</option>
+        </select>
+
+        <label style="font-size:0.7rem; color:#94a3b8; text-transform:uppercase; letter-spacing:1px; margin-left:5px;">Difficulty Mode</label>
+        <select id="mode-sel">
+            <option value="easy">Easy (Sequential)</option>
+            <option value="medium">Medium (Shuffle Test)</option>
+            <option value="hard">Hard (Random 50 from ALL)</option>
+        </select>
+
+        <div class="pin-box">
+            <p style="font-size:0.7rem; color:#94a3b8; margin-bottom:10px; text-transform:uppercase;">Enter Access Code to Unlock</p>
+            <input type="password" id="user-pin" class="pin-input" placeholder="****" maxlength="4">
+        </div>
+
+        <button class="btn" onclick="checkAccess()">LAUNCH ASSESSMENT</button>
+    </div>
+
+    <div id="quiz-view" style="display:none;">
+        <div class="stats">
+            <div class="stat-box"><span id="c-count" class="stat-val" style="color:var(--success)">0</span><small>CORRECT</small></div>
+            <div class="stat-box"><span id="w-count" class="stat-val" style="color:var(--error)">0</span><small>WRONG</small></div>
+            <div class="stat-box"><span id="m-count" class="stat-val">0.00</span><small>MARKS</small></div>
+        </div>
+        <div id="q-box"></div>
+        <button class="btn" id="next-btn" onclick="handleAction()">Confirm Answer</button>
+    </div>
+
+    <div id="end-view" style="display:none; text-align:center;">
+        <h1 id="res-emoji" style="font-size:4rem; margin-bottom:10px;"></h1>
+        <h2 id="res-text" style="font-size:2rem; margin-bottom:5px;"></h2>
+        <p style="font-size:1.1rem; color:#94a3b8;">Final Score: <b id="res-marks" style="color:#fff;"></b></p>
+        <button class="btn" onclick="location.reload()" style="margin-top:20px;">Back to Menu</button>
+    </div>
+</div>
+
+<script src="database.js"></script>
+<script>
+    // --- 1. CONFIGURATION (SET YOUR PIN HERE) ---
+    const CORRECT_PIN = '0108'; 
+
+    // --- 2. STATS & TRACKING ---
+    let stats = JSON.parse(localStorage.getItem('ia_stats')) || { tests: 0, totalMarks: 0, lastMark: 0 };
+    function updateDashboard() {
+        const dash = document.getElementById('stats-dashboard');
+        if (stats.tests > 0) {
+            const avg = (stats.totalMarks / stats.tests).toFixed(2);
+            dash.innerHTML = `<div class="dash-row">
+                <span>Attempts: <b>${stats.tests}</b></span>
+                <span>Avg: <b>${avg}</b></span>
+                <span>Last: <b>${stats.lastMark.toFixed(2)}</b></span>
+            </div>`;
+        } else {
+            dash.innerHTML = `<div class="dash-row" style="justify-content:center;"><span>No previous attempts. Good luck!</span></div>`;
+        }
+    }
+    window.onload = updateDashboard;
+
+    // --- 3. QUIZ LOGIC ---
+    let activeQuestions = [];
+    let cur = 0; let cScore = 0; let wScore = 0; let isAns = false;
+
+    function checkAccess() {
+        const input = document.getElementById('user-pin').value;
+        if (input === CORRECT_PIN) {
+            initQuiz();
+        } else {
+            alert("❌ Incorrect Access Code!");
+        }
+    }
+
+    function initQuiz() {
+        const test = document.getElementById('test-sel').value;
+        const mode = document.getElementById('mode-sel').value;
+
+        if (mode === 'hard') {
+            activeQuestions = [].concat(...Object.values(allTests).filter(t => t.length > 0));
+            activeQuestions.sort(() => Math.random() - 0.5);
+            activeQuestions = activeQuestions.slice(0, 50);
+        } else {
+            activeQuestions = [...allTests[test]];
+            if (mode === 'medium') activeQuestions.sort(() => Math.random() - 0.5);
+        }
+
+        if (activeQuestions.length === 0) return alert("This test is currently empty!");
+
+        document.getElementById('menu-view').style.display = 'none';
+        document.getElementById('quiz-view').style.display = 'block';
+        showQ();
+    }
+
+    function showQ() {
+        isAns = false;
+        const qData = activeQuestions[cur];
+        document.getElementById('q-box').innerHTML = `
+            <p style="font-weight:600; font-size:1.15rem; line-height:1.4; margin-bottom:25px;">Q${cur+1}. ${qData.q}</p>
+            <div id="options-list">
+                ${qData.o.map(o => `
+                    <div class="option" onclick="selectOpt(this)">
+                        <input type="radio" name="opt" value="${o}" style="display:none">
+                        <span>${o}</span>
+                    </div>
+                `).join('')}
+            </div>
+            <div id="feedback" class="feed"></div>
+        `;
+        document.getElementById('next-btn').innerText = "Confirm Answer";
+    }
+
+    function selectOpt(el) {
+        if(isAns) return;
+        document.querySelectorAll('.option').forEach(o => o.style.borderColor = "#334155");
+        el.querySelector('input').checked = true;
+        el.style.borderColor = "var(--accent)";
+    }
+
+    function handleAction() {
+        if (!isAns) {
+            const sel = document.querySelector('input[name="opt"]:checked');
+            if (!sel) return;
+            isAns = true;
+            
+            const correct = activeQuestions[cur].a;
+            const isRight = sel.value === correct;
+            if (isRight) cScore++; else wScore++;
+            
+            document.querySelectorAll('.option').forEach(opt => {
+                const val = opt.querySelector('input').value;
+                if (val === correct) opt.classList.add('correct-choice');
+                else if (val === sel.value && !isRight) opt.classList.add('wrong-choice');
+                opt.style.pointerEvents = 'none';
+            });
+            
+            const f = document.getElementById('feedback');
+            f.style.display = 'block';
+            f.style.borderLeftColor = isRight ? 'var(--success)' : 'var(--error)';
+            f.innerHTML = `<strong style="color:${isRight ? 'var(--success)' : 'var(--error)'}">${isRight ? 'CORRECT! 🚀' : 'INCORRECT 💀'}</strong><br><span style="color:#cbd5e1">${activeQuestions[cur].e}</span>`;
+            document.getElementById('next-btn').innerText = "Next Question →";
+            updateUI();
+        } else {
+            cur++;
+            if (cur < activeQuestions.length) showQ(); else showEnd();
+        }
+    }
+
+    function updateUI() {
+        const net = (cScore * 1) - (wScore * 0.25);
+        document.getElementById('c-count').innerText = cScore;
+        document.getElementById('w-count').innerText = wScore;
+        document.getElementById('m-count').innerText = net.toFixed(2);
+    }
+
+    function showEnd() {
+        const net = (cScore * 1) - (wScore * 0.25);
+        stats.tests++; stats.totalMarks += net; stats.lastMark = net;
+        localStorage.setItem('ia_stats', JSON.stringify(stats));
+
+        document.getElementById('quiz-view').style.display = 'none';
+        document.getElementById('end-view').style.display = 'block';
+        const pass = (net / activeQuestions.length) >= 0.6;
+        document.getElementById('res-emoji').innerText = pass ? "🏆" : "📉";
+        document.getElementById('res-text').innerText = pass ? "ASSESSMENT PASSED" : "ASSESSMENT FAILED";
+        document.getElementById('res-text').style.color = pass ? "var(--success)" : "var(--error)";
+        document.getElementById('res-marks').innerText = net.toFixed(2) + " / " + activeQuestions.length;
+    }
+</script>
+</body>
+</html>
