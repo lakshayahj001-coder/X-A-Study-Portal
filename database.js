@@ -123,7 +123,7 @@ const allTests = {
         { 
             q: "Which of the following statement is TRUE with respect to change in nomination?", 
             o: ["Nomination once made cannot be changed", "Only the first holder can sign the change", "All joint holders must authorise the change", "Existing nomination must be cancelled first"], 
-            a: "All the joint holders have to authorise the change in nomination", 
+            a: "All joint holders must authorise the change", 
             e: "Nomination can be changed or cancelled at any time, but all joint holders must sign to authorize the action." 
         },
         { 
@@ -140,7 +140,7 @@ const allTests = {
         },
         { 
             q: "Identify what best describes the role of the intermediary and the investor while making an investment in a mutual fund?", 
-            o: ["Distributor responsible for choice and execution", "Distributor helps choice, investor executes", "Advisor assists choice, investor/distributor executes", "Advisor responsible for advice and execution"], 
+            o: ["Distributor responsible for choice and execution", "Distributor helps choice, investor executes", "The registered investment advisor will assist in investment choices and the investor/distributor will execute the investments decisions", "Advisor responsible for advice and execution"], 
             a: "The registered investment advisor will assist in investment choices and the investor/distributor will execute the investments decisions", 
             e: "SEBI regulations specify that individual Investment advisers cannot undertake both advisory and distribution; they assist in choices while others handle execution." 
         },
@@ -165,7 +165,7 @@ const allTests = {
         { 
             q: "Identify the situation in which the geometric mean return from an investment will be less than its arithmetic mean return?", 
             o: ["Investment period is more than one year", "Investment period is one year", "Investment period is less than one year", "For all investment periods"], 
-            a: "When the investment period is more than one year", 
+            a: "Investment period is more than one year", 
             e: "Over holding periods longer than one year, the geometric average return is always less than the arithmetic return unless all yearly returns are identical." 
         },
         { 
@@ -207,7 +207,7 @@ const allTests = {
         { 
             q: "In the avalanche mode of repayment of loan the amount paid first is the -", 
             o: ["Loan with highest amount", "Loan with lowest amount", "Loan with highest interest rate", "Loan with lowest interest rate"], 
-            a: "Loan with the highest interest rate", 
+            a: "Loan with highest interest rate", 
             e: "The avalanche strategy involves paying off the highest interest rate loans first to most efficiently bring down the total interest burden." 
         },
         { 
@@ -242,14 +242,14 @@ const allTests = {
         },
         { 
             q: "If an investor chooses to re-materialize their electronic demat securities, what is the effect?", 
-            o: ["Continue in digital with different ISIN", "Permanently locked in depository", "Statement provided instead of certificates", "Account debited and physical certificates issued"], 
+            o: ["Continue in digital with different ISIN", "Permanently locked in depository", "Statement provided instead of certificates", "The depository debits the investor's account and issues fresh physical certificates"], 
             a: "The depository debits the investor's account and issues fresh physical certificates", 
             e: "Re-materialization converts electronic holdings back into physical share certificates by debiting the demat account and issuing fresh physical copies." 
         },
         { 
             q: "How should the benchmark chosen for a portfolio be managed?", 
             o: ["Change whenever holdings change", "Regularly reviewed for suitability", "Retained for entire duration", "Approved by regulators"], 
-            a: "The benchmark has to be regularly reviewed to ensure continued suitability", 
+            a: "Regularly reviewed for suitability", 
             e: "Regular review ensures a benchmark remains aligned with the portfolio's strategy as market conditions and objectives change." 
         },
         { 
@@ -267,7 +267,7 @@ const allTests = {
         { 
             q: "How is Risk Profiling utilized in the financial advising process?", 
             o: ["Conducted only once at start", "Reassessed for every new product", "Applied only if client agrees", "Regularly recorded and updated over time"], 
-            a: "Risk Profiling is regularly recorded and updated over time", 
+            a: "Regularly recorded and updated over time", 
             e: "Risk profiling is not a one-time activity; it must be documented and updated periodically to reflect changes in an investor's situation or market conditions." 
         },
         { 
@@ -285,13 +285,13 @@ const allTests = {
         { 
             q: "In which situation will dealing in securities be deemed NOT to be fraudulent?", 
             o: ["Buying, selling or pledging in physical/demat form", "Transacting without intention of performing", "Artificially inflating/depressing prices", "Inducing new investors with illiquid stock info"], 
-            a: "Buying, Selling or pledging of securities either in physical or dematerialized form", 
+            a: "Buying, selling or pledging in physical/demat form", 
             e: "Fraud involves acts committed to induce someone to deal in securities improperly; legal buying, selling, or pledging is not fraudulent." 
         },
         { 
             q: "A company issues bonds through a public issue. In such a case which of these is mandatory?", 
             o: ["Minimum tenor of five years", "Bonds must be listed on a stock exchange", "Company already listed on an exchange", "All of the above"], 
-            a: "The bonds have to be listed on a stock exchange", 
+            a: "Bonds must be listed on a stock exchange", 
             e: "Debentures or bonds issued under a public offer are mandatorily required to be listed on a stock exchange." 
         },
         { 
